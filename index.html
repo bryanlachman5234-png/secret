@@ -1,3 +1,31 @@
+<style>
+  .floating-heart {
+    position: fixed;
+    bottom: -30px;
+    z-index: 9999;
+    pointer-events: none;
+    animation: popIn 0.18s ease-out forwards, floatUp 2.6s ease-in forwards;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.3); }
+    70% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateX(0) translateY(0) scale(0.9);
+      opacity: 0;
+    }
+    10% { opacity: 1; }
+    100% {
+      transform: translateX(var(--drift)) translateY(-110vh) scale(1.25);
+      opacity: 0;
+    }
+  }
+</style>
 <script>
   // codename: red
   let scale = 1;
@@ -7,25 +35,19 @@
   const no = document.getElementById("no");
   const msg = document.getElementById("message");
 
-  // Create and animate one floating heart
   function spawnHeart() {
     const heart = document.createElement("div");
     heart.textContent = "❤️";
     heart.className = "floating-heart";
 
-    // Random horizontal position
     heart.style.left = Math.random() * 100 + "vw";
 
-    // Random size
-    const size = 18 + Math.random() * 22; // 18px to 40px
+    const size = 18 + Math.random() * 22;
     heart.style.fontSize = size + "px";
 
-    // Random drift
     heart.style.setProperty("--drift", (Math.random() * 120 - 60) + "px");
 
     document.body.appendChild(heart);
-
-    // Remove after animation
     heart.addEventListener("animationend", () => heart.remove());
   }
 
@@ -40,15 +62,14 @@
     yes.disabled = true;
     no.disabled = true;
 
-    // Start hearts
     spawnHeart();
     heartInterval = setInterval(spawnHeart, 220);
 
-    // Optional: stop hearts after a bit (comment out if you want infinite hearts)
     setTimeout(() => {
       clearInterval(heartInterval);
       heartInterval = null;
     }, 6000);
   });
 </script>
+
 
